@@ -1,0 +1,43 @@
+
+--store indexes to be used as screen resolution scales
+local i1, i2, i3
+
+set i1 to 2 --larger text
+set i2 to 4 -- default
+set i3 to 5 -- more space
+
+
+tell application "System Preferences" to reveal pane "com.apple.preference.displays"
+
+tell application "System Events" to tell process "System Preferences"
+	
+	set activeWindow to window 1
+	
+	repeat until exists activeWindow
+	end repeat
+	
+	set tabGroup to tab group 1 of activeWindow
+	
+	tell tabGroup to click radio button "Scaled"
+	
+	set subGroup to group 1 of tabGroup
+	--Find the toggle buttons based on this group.
+	set radioGroup to radio group 1 of subGroup
+
+  --simply toggle that sets the index based on the currentIndex based on an increments ... in this example it will go from larget text to default to more space.
+	if (value of radio button i1 of radioGroup) is true then
+		set currentIndex to i2
+	else if (value of radio button i2 of radioGroup) is true then
+		set currentIndex to i3
+	else
+		set currentIndex to i1
+	end if
+	-- Click the radio button for the new scale option/index
+	tell radioGroup to click radio button currentIndex
+
+--close the preferences or the groups can not be found
+tell application "System Preferences"
+		quit
+	end tell
+  
+end tell
